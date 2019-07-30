@@ -27,6 +27,8 @@ class SignUp extends React.Component {
     email: '',
     password: '',
     password2: '',
+    displayName: '',
+    specialty: '',
   }
 
   constructor(props) {
@@ -41,7 +43,7 @@ class SignUp extends React.Component {
   handleSubmit = () => {
     const { onFormSubmit } = this.props;
     onFormSubmit(this.state)
-      .then(() => setTimeout(() => { Actions.pop(); Actions.login(); }, 1000))
+      .then(() => setTimeout(() => { Actions.home(); }, 1000))
       .catch(() => {});
   }
 
@@ -51,11 +53,6 @@ class SignUp extends React.Component {
     return (
       <Container>
         <Content padder>
-          <Header
-            title="Welcome"
-            content="We're glad to welcome you to the community. There's only a few questions and you'll be on your way."
-          />
-
           {error && <Messages message={error} />}
           {success && <Messages type="success" message={success} />}
 
@@ -73,6 +70,24 @@ class SignUp extends React.Component {
               <Input
                 disabled={loading}
                 onChangeText={v => this.handleChange('lastName', v)}
+              />
+            </Item>
+            
+            <Item stackedLabel>
+              <Label>Display Name</Label>
+              <Input
+                autoCapitalize='none'
+                disabled={loading}
+                onChangeText={v => this.handleChange('displayName', v)}
+              />
+            </Item>
+            
+            <Item stackedLabel>
+              <Label>Specialty</Label>
+              <Input
+                autoCapitalize='none'
+                disabled={loading}
+                onChangeText={v => this.handleChange('specialty', v)}
               />
             </Item>
 

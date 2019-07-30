@@ -1,19 +1,16 @@
 import React from 'react';
 import { Scene, Tabs, Stack } from 'react-native-router-flux';
 import { Icon } from 'native-base';
+import { Image } from 'react-native';
 
 import DefaultProps from '../constants/navigation';
 import AppConfig from '../../constants/config';
 
+import { Actions } from 'react-native-router-flux';
+
 import RecipesContainer from '../../containers/Recipes';
 import RecipeListingComponent from '../components/Recipe/Listing';
 import RecipeSingleComponent from '../components/Recipe/Single';
-
-import SignUpContainer from '../../containers/SignUp';
-import SignUpComponent from '../components/User/SignUp';
-
-import LoginContainer from '../../containers/Login';
-import LoginComponent from '../components/User/Login';
 
 import ForgotPasswordContainer from '../../containers/ForgotPassword';
 import ForgotPasswordComponent from '../components/User/ForgotPassword';
@@ -25,74 +22,81 @@ import MemberContainer from '../../containers/Member';
 import ProfileComponent from '../components/User/Profile';
 
 import AboutComponent from '../components/About';
+import InitialScreen from '../components/User/InitialScreen'
+import PostWithComments from '../components/Discover/PostWithComments'
+import NewPost from '../components/Discover/NewPost'
+import NewComment from '../components/Discover/NewComment'
+import FriendList from '../components/Friends/FriendList'
+import FriendChat from '../components/Friends/FriendChat'
+
+const styles = {
+  tabIcon: {
+  }
+}
 
 const Index = (
   <Stack hideNavBar>
+    <Scene component={InitialScreen} />
+    
     <Scene hideNavBar>
       <Tabs
         key="tabbar"
-        swipeEnabled
+        tabBarPosition="bottom"
         type="replace"
         showLabel={false}
+        tabBarOnPress={ ({ navigation, defaultHandler }) => {
+          const { key } = navigation.state;
+          if (key === 'addPost') {
+            Actions.newPost();
+            return;
+          }
+          
+          defaultHandler()
+        }}
         {...DefaultProps.tabProps}
       >
         <Stack
           key="home"
-          title={AppConfig.appName.toUpperCase()}
-          icon={() => <Icon name="planet" {...DefaultProps.icons} />}
+          title="Nurse Connect"
+          icon={() => <Image source={require('../../images/discover-icon.png')} />}
           {...DefaultProps.navbarProps}
         >
-          <Scene key="home" component={AboutComponent} />
+          <Scene hideNavBar component={AboutComponent} />
         </Stack>
-
+        
         <Stack
-          key="recipes"
+          key="jobs"
           title="RECIPES"
-          icon={() => <Icon name="book" {...DefaultProps.icons} />}
+          icon={() => <Image source={require('../../images/work-icon.png')} />}
           {...DefaultProps.navbarProps}
         >
-          <Scene key="recipes" component={RecipesContainer} Layout={RecipeListingComponent} />
+          <Scene component={RecipesContainer} Layout={RecipeListingComponent} />
+        </Stack>
+        
+        <Scene
+          key="addPost"
+          icon={() => <Icon name="ios-add-circle-outline" />}
+          {...DefaultProps.navbarProps}
+          component={NewPost}
+        />
+
+        <Stack
+          key="tickets"
+          title="RECIPES"
+          icon={() => <Image source={require('../../images/ticket-icon.png')} />}
+          {...DefaultProps.navbarProps}
+        >
+          <Scene component={RecipesContainer} Layout={RecipeListingComponent} />
         </Stack>
 
         <Stack
-          key="profile"
-          title="PROFILE"
-          icon={() => <Icon name="contact" {...DefaultProps.icons} />}
+          key="friends"
+          title="Friends"
+          hideNavBar
+          icon={() => <Image source={require('../../images/user-icon.png')} />}
           {...DefaultProps.navbarProps}
         >
-          <Scene key="profileHome" component={MemberContainer} Layout={ProfileComponent} />
-          <Scene
-            back
-            key="signUp"
-            title="SIGN UP"
-            {...DefaultProps.navbarProps}
-            component={SignUpContainer}
-            Layout={SignUpComponent}
-          />
-          <Scene
-            back
-            key="login"
-            title="LOGIN"
-            {...DefaultProps.navbarProps}
-            component={LoginContainer}
-            Layout={LoginComponent}
-          />
-          <Scene
-            back
-            key="forgotPassword"
-            title="FORGOT PASSWORD"
-            {...DefaultProps.navbarProps}
-            component={ForgotPasswordContainer}
-            Layout={ForgotPasswordComponent}
-          />
-          <Scene
-            back
-            key="updateProfile"
-            title="UPDATE PROFILE"
-            {...DefaultProps.navbarProps}
-            component={UpdateProfileContainer}
-            Layout={UpdateProfileComponent}
-          />
+          <Scene key="profileHome" component={FriendList} />
         </Stack>
       </Tabs>
     </Scene>
@@ -100,13 +104,67 @@ const Index = (
     <Scene
       back
       clone
-      key="recipe"
-      title="RECIPE"
+      key="postWithComments"
+      title="Post Details"
       {...DefaultProps.navbarProps}
-      component={RecipesContainer}
-      Layout={RecipeSingleComponent}
+      component={PostWithComments}
+    />
+  
+    <Scene
+      back
+      clone
+      key="newPost"
+      title="New Post"
+      hideTabBar
+      {...DefaultProps.navbarProps}
+      component={NewPost}
+    />
+  
+    <Scene
+      back
+      clone
+      key="addNewComment"
+      title="New Comment"
+      hideTabBar
+      {...DefaultProps.navbarProps}
+      component={NewComment}
+    />
+  
+    <Scene
+      back
+      clone
+      key="friendChat"
+      hideTabBar
+      hideNavBar
+      {...DefaultProps.navbarProps}
+      component={FriendChat}
     />
   </Stack>
 );
+
+// <Stack
+//   key="friends"
+//   title="Friends"
+//   icon={() => <Icon name="contacts" {...DefaultProps.icons} />}
+//   {...DefaultProps.navbarProps}
+// >
+//   <Scene key="profileHome" component={MemberContainer} Layout={ProfileComponent} />
+//   <Scene
+//     back
+//     key="forgotPassword"
+//     title="FORGOT PASSWORD"
+//     {...DefaultProps.navbarProps}
+//     component={ForgotPasswordContainer}
+//     Layout={ForgotPasswordComponent}
+//   />
+//   <Scene
+//     back
+//     key="updateProfile"
+//     title="UPDATE PROFILE"
+//     {...DefaultProps.navbarProps}
+//     component={UpdateProfileContainer}
+//     Layout={UpdateProfileComponent}
+//   />
+// </Stack>
 
 export default Index;

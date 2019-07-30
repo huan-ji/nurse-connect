@@ -42,7 +42,7 @@ class Login extends React.Component {
     const { onFormSubmit } = this.props;
 
     return onFormSubmit(this.state)
-      .then(() => setTimeout(() => Actions.pop(), 1000))
+      .then(() => setTimeout(() => Actions.home(), 1000))
       .catch(() => {});
   }
 
@@ -53,11 +53,7 @@ class Login extends React.Component {
     return (
       <Container>
         <Content>
-          <View padder>
-            <Header
-              title="Welcome back"
-              content="Please use your email and password to login."
-            />
+          <View>
             {error && <Messages message={error} />}
             {success && <Messages type="success" message={success} />}
           </View>

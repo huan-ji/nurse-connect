@@ -21,13 +21,15 @@ export default {
 
     setUserDetails(state, payload) {
       const {
-        firstName, lastName, signedUp, role,
+        firstName, lastName, displayName, specialty, signedUp, role,
       } = payload;
 
       return {
         ...state,
         firstName,
         lastName,
+        displayName,
+        specialty,
         signedUp,
         role,
       };
@@ -50,13 +52,14 @@ export default {
      */
     signUp(formData) {
       const {
-        email, password, password2, firstName, lastName,
+        email, password, password2, firstName, lastName, displayName, specialty,
       } = formData;
 
       return new Promise(async (resolve, reject) => {
         // Validation rules
         if (!firstName) return reject({ message: errorMessages.missingFirstName });
         if (!lastName) return reject({ message: errorMessages.missingLastName });
+        if (!displayName) return reject({ message: errorMessages.missingDisplayName });
         if (!email) return reject({ message: errorMessages.missingEmail });
         if (!password) return reject({ message: errorMessages.missingPassword });
         if (!password2) return reject({ message: errorMessages.missingPassword });
@@ -70,6 +73,8 @@ export default {
               FirebaseRef.child(`users/${res.user.uid}`).set({
                 firstName,
                 lastName,
+                displayName,
+                specialty,
                 signedUp: Firebase.database.ServerValue.TIMESTAMP,
                 lastLoggedIn: Firebase.database.ServerValue.TIMESTAMP,
               }).then(resolve);
@@ -198,7 +203,7 @@ export default {
      */
     updateProfile(formData) {
       const {
-        email, password, password2, firstName, lastName, changeEmail, changePassword,
+        email, password, password2, firstName, lastName, displayName, specialty, changeEmail, changePassword,
       } = formData;
 
       return new Promise(async (resolve, reject) => {
@@ -209,6 +214,7 @@ export default {
         // Validation rules
         if (!firstName) return reject({ message: errorMessages.missingFirstName });
         if (!lastName) return reject({ message: errorMessages.missingLastName });
+        if (!displayName) return reject({ message: errorMessages.missingDisplayName });
         if (changeEmail) {
           if (!email) return reject({ message: errorMessages.missingEmail });
         }
@@ -219,7 +225,7 @@ export default {
         }
 
         // Go to Firebase
-        return FirebaseRef.child(`users/${UID}`).update({ firstName, lastName })
+        return FirebaseRef.child(`users/${UID}`).update({ firstName, lastName, displayName, specialty })
           .then(async () => {
             // Update Email address
             if (changeEmail) {

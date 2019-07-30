@@ -14,12 +14,19 @@ export default {
 
   tabProps: {
     swipeEnabled: false,
-    activeBackgroundColor: 'rgba(255,255,255,0.1)',
-    inactiveBackgroundColor: Colors.brandPrimary,
-    tabBarStyle: { backgroundColor: Colors.brandPrimary },
+    activeBackgroundColor: 'lightgrey',
+    inactiveBackgroundColor: 'white',
+    tabBarStyle: {
+      backgroundColor: Colors.brandPrimary,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.3,
+      shadowRadius: 5,
+      elevation: 5,
+    },
   },
 
   icons: {
-    style: { color: 'white', height: 30, width: 30 },
+    style: { color: 'black', height: 30, width: 30 },
   },
 };
