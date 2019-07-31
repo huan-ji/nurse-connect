@@ -6,10 +6,10 @@ import { Actions } from 'react-native-router-flux';
 import Post from './Discover/Post.js'
 import Category from './Discover/Category.js'
 
-export default class TabsScrollableExample extends Component {
+export default class Discover extends Component {
   constructor(props) {
     super(props)
-    
+
     this.state = {
       currentCategory: 0,
       categories: {
@@ -119,21 +119,21 @@ export default class TabsScrollableExample extends Component {
           }
         },
         'Random': {
-          
+
         },
         'Events': {
-          
+
         },
       },
     }
-    
+
     this.addNewPost = this.addNewPost.bind(this);
   }
-  
+
   getCategoryName(i) {
     return Object.keys(this.state.categories)[i];
   }
-  
+
   addNewPost(post) {
     const currentCategoryName = this.getCategoryName(this.state.currentCategory);
     const currentCategory = Object.assign({}, this.state.categories[currentCategoryName]);
@@ -141,14 +141,14 @@ export default class TabsScrollableExample extends Component {
     const nextKey = parseInt(currentCategoryKeys[currentCategoryKeys.length - 1]) + 1;
     currentCategory[nextKey.toString()] = post;
     this.state.categories[currentCategoryName] = currentCategory;
-    
+
     this.setState({ categories: this.state.categories });
   }
-  
+
   addNewComment(postId, comment, parentId, topLevel) {
     const currentCategoryName = this.getCategoryName(this.state.currentCategory);
     const currentPost = Object.assign({}, this.state.categories[currentCategoryName][postId]);
-    
+
     const currentCommentsKeys = Object.keys(currentPost.comments);
     const nextKey = parseInt(currentCommentsKeys[currentCommentsKeys.length - 1]) + 1;
     currentPost.comments[nextKey.toString()] = comment;
@@ -158,29 +158,29 @@ export default class TabsScrollableExample extends Component {
       currentPost.comments[parentId].replies.push(nextKey);
     }
     this.state.categories[currentCategoryName][postId] = currentPost;
-    
+
     Actions.postWithComments(
-      { 
-        post: currentPost, 
-        topLevelCommentIds: currentPost.topLevelCommentIds, 
-        addLike: this.addLike.bind(this), 
-        id: postId, 
+      {
+        post: currentPost,
+        topLevelCommentIds: currentPost.topLevelCommentIds,
+        addLike: this.addLike.bind(this),
+        id: postId,
         addNewComment: this.addNewComment.bind(this),
       }
     )
     this.setState({ categories: this.state.categories });
   }
-  
+
   addLike(id, category) {
     const newCategories = Object.assign({}, this.state.categories)
     newCategories[category][id].likes += 1
-    
+
     this.setState({ categories: newCategories })
   }
-  
+
   render() {
     const { categories } = this.state
-    
+
     return (
       <Container>
         <Header hasTabs>
@@ -205,7 +205,7 @@ export default class TabsScrollableExample extends Component {
           {
             Object.keys(categories).map((category) => {
               const posts = categories[category]
-              
+
               return (
                 <Tab heading={category} key={category}>
                   <Category posts={posts} addNewComment={(...args) => this.addNewComment(...args)} addLike={(id) => this.addLike(id, category)} />

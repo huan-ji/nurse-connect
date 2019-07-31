@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "react-native-starter-app"
+    "default": "react-native-starter-app",
+    "nurse-connect": "nurse-connect"
   }
 }

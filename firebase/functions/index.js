@@ -10,6 +10,22 @@ const admin = require('firebase-admin');
 
 admin.initializeApp(functions.config().firebase);
 
+exports.addPostLike = functions.database.ref('/likes/{likeId}').onWrite((change) => {
+  if (!change.after.exists()) return null;
+
+  const original = change.after.val();
+
+  const fullName = `${original.firstName} ${original.lastName}`;
+  return change.after.ref.child('fullName').set(fullName);
+});
+
+exports.addPostComment = functions.database.ref('/comments/{commentId}').onCreate((change) => {
+  const { postId } = change.after.val();
+
+  const fullName = `${original.firstName} ${original.lastName}`;
+  return change.after.ref.child('fullName').set(fullName);
+});
+
 /**
   * Creates a full name attribute based on the first and last names
   */

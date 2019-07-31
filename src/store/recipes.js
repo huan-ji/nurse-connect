@@ -1,9 +1,5 @@
 export default {
-  meals: [
-    { id: 1, title: '---' },
-    { id: 2, title: '----- ---' },
-  ],
-  recipes: [
+  posts: [
     {
       placeholder: true,
       id: 0,
