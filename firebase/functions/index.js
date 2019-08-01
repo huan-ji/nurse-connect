@@ -18,12 +18,29 @@ exports.addPostLike = functions.database.ref('/postLikes/{postLikeId}').onCreate
   post.set(newPost);
 });
 
-exports.addComment = functions.database.ref('/comments/{commentId}').onCreate((change) => {
-  const { postId } = change.after.val();
-  const post = admin.database().ref(`/posts/${postId}`);
-  const newPost = Object.assign({}, post.val(), { commentCount: post.val().commentCount + 1 });
+exports.addComment = functions.database.ref('/comments/{commentId}').onCreate((snapshot, context) => {
+  const { postId, topLevelComment, parentId } = snapshot.after.val();
+  const { commentId } = context.params.pushId;
+  const postRef = admin.database().ref(`/posts/${postId}`);
+  let topLevelCommentIds;
 
-  post.set(newPost);
+  if (topLevelComment) {
+    topLevelCommentIds = Object.values(postRef.val().topLevelCommentIds).concat([commentId]);
+  } else {
+    topLevelCommentIds = postRef.val().topLevelCommentIds;
+    const parentCommentRef = admin.database().ref(`/comments/${parentId}`);
+    const newParentComment = parentCommentRef.val();
+    newParentComment.replies = Object.values(newParentComment.replies).concat([commentId]);
+
+    parentCommentRef.set(newParentComment);
+  }
+
+  const newPost = Object.assign({}, postRef.val(), {
+    commentCount: postRef.val().commentCount + 1,
+    topLevelCommentIds,
+  });
+
+  postRef.set(newPost);
 });
 
 /**

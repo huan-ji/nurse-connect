@@ -8,10 +8,12 @@ class Category extends Component {
     const { categoryId, getPosts } = this.props;
     getPosts(categoryId);
   }
-  
+
   render() {
-    const { posts, addComment, addLike } = this.props;
-    
+    const {
+      posts, addComment, addLike, setPost
+    } = this.props;
+
     return (
       <Content>
         {Object.keys(posts).map((id) => {
@@ -24,6 +26,7 @@ class Category extends Component {
               post={post}
               addComment={addComment}
               addLike={addLike}
+              setPost={setPost}
               {...post}
             />
           );
@@ -40,6 +43,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getPosts: dispatch.posts.getPosts,
   createPost: dispatch.posts.createPost,
+  setPost: dispatch.posts.setPost,
   addLike: dispatch.posts.createLike,
   addComment: dispatch.comments.createComment,
 });

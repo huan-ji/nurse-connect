@@ -40,6 +40,9 @@ export default {
   },
 
   effects: () => ({
+    setPost(postId) {
+      this.setPost(postId);
+    },
     getPosts(categoryId) {
       if (Firebase === null) return () => new Promise(resolve => resolve());
 

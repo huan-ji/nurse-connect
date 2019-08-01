@@ -1,21 +1,22 @@
 import React from 'react';
-import {
-  Container, Content, Text, Form, Item, Label, Input, Button, Textarea,
-} from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import {
+  Container, Content, Text, Form, Button, Textarea,
+} from 'native-base';
 import Spacer from '../UI/Spacer';
 
 class NewComment extends React.Component {
-  state = {
-    text: '',
-    author: 'kkiiji14',
-    specialty: 'Travel Nurse',
-    postId: this.props.postId,
-    replies: [],
-  }
-
   constructor(props) {
     super(props);
+
+    const { postId, parentId, topLevelComment } = this.props;
+    this.state = {
+      text: '',
+      postId,
+      parentId,
+      topLevelComment,
+      replies: {},
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,10 +25,9 @@ class NewComment extends React.Component {
   handleChange = (name, val) => this.setState({ [name]: val })
 
   handleSubmit = () => {
-    const { onFormSubmit, postId, parentId, topLevelComment } = this.props;
-    onFormSubmit(postId, this.state, parentId, topLevelComment);
-    // .then(() => setTimeout(() => { Actions.home(); }, 1000))
-    // .catch(() => {});
+    const { onFormSubmit, postId, parentId } = this.props;
+    onFormSubmit(this.state)
+      .then(() => Actions.pop());
   }
 
   render() {
