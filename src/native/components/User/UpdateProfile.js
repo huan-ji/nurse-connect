@@ -30,6 +30,8 @@ class UpdateProfile extends React.Component {
     this.state = {
       firstName: props.member.firstName || '',
       lastName: props.member.lastName || '',
+      displayName: props.member.displayName || '',
+      specialty: props.member.specialty || '',
       email: props.member.email || '',
       password: '',
       password2: '',
@@ -82,6 +84,24 @@ class UpdateProfile extends React.Component {
                 value={lastName}
                 disabled={loading}
                 onChangeText={v => this.handleChange('lastName', v)}
+              />
+            </Item>
+            
+            <Item stackedLabel>
+              <Label>Display Name</Label>
+              <Input
+                autoCapitalize='none'
+                disabled={loading}
+                onChangeText={v => this.handleChange('displayName', v)}
+              />
+            </Item>
+            
+            <Item stackedLabel>
+              <Label>Specialty</Label>
+              <Input
+                autoCapitalize='none'
+                disabled={loading}
+                onChangeText={v => this.handleChange('specialty', v)}
               />
             </Item>
 

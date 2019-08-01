@@ -10,20 +10,20 @@ const admin = require('firebase-admin');
 
 admin.initializeApp(functions.config().firebase);
 
-exports.addPostLike = functions.database.ref('/likes/{likeId}').onWrite((change) => {
-  if (!change.after.exists()) return null;
+exports.addPostLike = functions.database.ref('/postLikes/{postLikeId}').onCreate((change) => {
+  const { postId } = change.after.val();
+  const post = admin.database().ref(`/posts/${postId}`);
+  const newPost = Object.assign({}, post.val(), { likeCount: post.val().likeCount + 1 });
 
-  const original = change.after.val();
-
-  const fullName = `${original.firstName} ${original.lastName}`;
-  return change.after.ref.child('fullName').set(fullName);
+  post.set(newPost);
 });
 
-exports.addPostComment = functions.database.ref('/comments/{commentId}').onCreate((change) => {
+exports.addComment = functions.database.ref('/comments/{commentId}').onCreate((change) => {
   const { postId } = change.after.val();
+  const post = admin.database().ref(`/posts/${postId}`);
+  const newPost = Object.assign({}, post.val(), { commentCount: post.val().commentCount + 1 });
 
-  const fullName = `${original.firstName} ${original.lastName}`;
-  return change.after.ref.child('fullName').set(fullName);
+  post.set(newPost);
 });
 
 /**

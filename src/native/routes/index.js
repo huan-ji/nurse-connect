@@ -21,8 +21,8 @@ import UpdateProfileComponent from '../components/User/UpdateProfile';
 import MemberContainer from '../../containers/Member';
 import ProfileComponent from '../components/User/Profile';
 
-import AboutComponent from '../components/About';
-import InitialScreen from '../components/User/InitialScreen'
+import Discover from '../components/Discover';
+import FirstScreen from '../FirstScreen'
 import PostWithComments from '../components/Discover/PostWithComments'
 import NewPost from '../components/Discover/NewPost'
 import NewComment from '../components/Discover/NewComment'
@@ -36,7 +36,7 @@ const styles = {
 
 const Index = (
   <Stack hideNavBar>
-    <Scene component={InitialScreen} />
+    <Scene component={FirstScreen} />
     
     <Scene hideNavBar>
       <Tabs
@@ -61,7 +61,7 @@ const Index = (
           icon={() => <Image source={require('../../images/discover-icon.png')} />}
           {...DefaultProps.navbarProps}
         >
-          <Scene hideNavBar component={AboutComponent} />
+          <Scene hideNavBar component={Discover} />
         </Stack>
         
         <Stack
@@ -70,7 +70,7 @@ const Index = (
           icon={() => <Image source={require('../../images/work-icon.png')} />}
           {...DefaultProps.navbarProps}
         >
-          <Scene component={RecipesContainer} Layout={RecipeListingComponent} />
+          <Scene component={UpdateProfileContainer} Layout={UpdateProfileComponent} />
         </Stack>
         
         <Scene
@@ -123,7 +123,7 @@ const Index = (
     <Scene
       back
       clone
-      key="addNewComment"
+      key="addComment"
       title="New Comment"
       hideTabBar
       {...DefaultProps.navbarProps}

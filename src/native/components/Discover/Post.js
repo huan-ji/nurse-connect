@@ -10,7 +10,7 @@ import { Actions } from 'react-native-router-flux';
 
 class Post extends Component {
   render() {
-    const { id, imageUrl, title, text, author, specialty, avatarUrl, likes, addLike, commentCount, comments, topLevelCommentIds, post, details, addNewComment } = this.props
+    const { id, imageUrl, title, text, author, specialty, avatarUrl, likeCount, addLike, commentCount, topLevelCommentIds, post, details, addComment } = this.props
     
     return (
       <Content padder>
@@ -28,16 +28,18 @@ class Post extends Component {
             <Content padder><Text>{ text }</Text></Content>
           </CardItem>
           {
-            imageUrl
-            && <CardItem cardBody><Image source={{ uri: imageUrl }} style={{ height: 200, width: null, flex: 1 }} /></CardItem>
+            imageUrl ? 
+              <CardItem cardBody>
+                <Image source={{ uri: imageUrl }} style={{ height: 200, width: null, flex: 1 }} />
+              </CardItem> : undefined
           }
           <CardItem>
             <Left>
               <Button transparent onPress={() => {
                   if (details) {
-                    Actions.addNewComment({ postId: id, parentId: id, topLevelComment: true, postTitle: title, onFormSubmit: addNewComment })
+                    Actions.addComment({ postId: id, parentId: id, topLevelComment: true, postTitle: title, onFormSubmit: addComment })
                   } else {
-                    Actions.postWithComments({ post, comments, topLevelCommentIds, addLike, id, addNewComment });
+                    Actions.postWithComments({ post, topLevelCommentIds, addLike, id, addNewComment });
                   }
                 }
               }>
@@ -45,8 +47,8 @@ class Post extends Component {
               </Button>
             </Left>
             <Right>
-              <Button transparent onPress={() => addLike()}>
-                <LikeIcon count={likes} />
+              <Button transparent onPress={() => addLike(id)}>
+                <LikeIcon count={likeCount} />
               </Button>
             </Right>
           </CardItem>

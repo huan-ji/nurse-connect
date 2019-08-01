@@ -8,19 +8,23 @@ import Messages from '../UI/Messages';
 import Spacer from '../UI/Spacer';
 
 class NewPost extends React.Component {
-  state = {
-    title: undefined,
-    text: undefined,
-    imageUrl: undefined,
-    author: 'kkiiji14',
-    specialty: 'Travel Nurse',
-    comments: {},
-    topLevelCommentIds: [],
-    likes: 0,
-  }
-
   constructor(props) {
     super(props);
+    
+    const { displayName, specialty, uid } = this.props.user;
+    const { categoryId } = this.props;
+    this.state = {
+      title: '',
+      text: '',
+      imageUrl: '',
+      author: displayName,
+      userId: uid,
+      categoryId,
+      specialty,
+      topLevelCommentIds: {},
+      likeCount: 0,
+      commentCount: 0,
+    }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,6 +35,7 @@ class NewPost extends React.Component {
   handleSubmit = () => {
     const { onFormSubmit } = this.props;
     onFormSubmit(this.state);
+    console.log(this.state);
     Actions.pop();
     // .then(() => setTimeout(() => { Actions.home(); }, 1000))
     // .catch(() => {});

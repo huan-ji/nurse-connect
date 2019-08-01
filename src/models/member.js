@@ -2,7 +2,8 @@ import { errorMessages } from '../constants/messages';
 import { Firebase, FirebaseRef } from '../lib/firebase';
 
 export default {
-  state: {}, // initial state
+  state: {
+  }, // initial state
 
   /**
    * Reducers
@@ -44,6 +45,10 @@ export default {
    * Effects/Actions
    */
   effects: dispatch => ({
+    setUser(user) {
+      this.setUserDetails(user);
+      this.setUserLogin(user);
+    },
     /**
      * Sign Up
      *

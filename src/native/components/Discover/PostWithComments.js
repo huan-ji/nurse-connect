@@ -10,7 +10,6 @@ const PostWithComments = ({
   id,
   addNewComment,
 }) => {
-  console.log(post);
   return (
     <Container>
       <Content padder>
