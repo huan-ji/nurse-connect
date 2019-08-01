@@ -4,42 +4,51 @@ import { Container, Content } from 'native-base';
 import Comments from './Comments';
 import Post from './Post';
 
-const PostWithComments = ({
-  post,
-  addLike,
-  id,
-  addNewComment,
-}) => {
-  return (
-    <Container>
-      <Content padder>
+class PostWithComments extends Component {
+  componentWillMount() {
+    const { categoryId, getPosts } = this.props;
+    getPosts(categoryId);
+  }
+  
+  render() {
+    const { posts, addComment, addLike } = this.props;
+    
+    return (
+      <Container>
+        <Content padder>
         <Post
+          key={id}
           id={id}
-          title={post.title}
-          text={post.text}
-          author={post.author}
-          specialty={post.specialty}
-          imageUrl={post.imageUrl}
-          likes={post.likes || 0}
-          addLike={() => addLike(id)}
-          commentCount={Object.keys(post.comments).length}
-          comments={post.comments}
-          topLevelCommentIds={post.topLevelCommentIds}
-          addNewComment={addNewComment}
+          post={post}
+          addComment={addComment}
+          addLike={addLike}
+          {...post}
           details
         />
-        {
-          !!Object.keys(post.comments).length
-          && <Comments
-            comments={post.comments}
-            topLevelCommentIds={post.topLevelCommentIds}
-            addNewComment={addNewComment}
-            postId={id}
-          />
-        }
-      </Content>
-    </Container>
-  );
-};
+          {
+            !!Object.keys(post.comments).length
+            && <Comments
+              comments={post.comments}
+              topLevelCommentIds={post.topLevelCommentIds}
+              addNewComment={addComment}
+              postId={id}
+            />
+          }
+        </Content>
+      </Container>
+    );
+  }
+}
 
-export default PostWithComments;
+const mapStateToProps = state => ({
+  posts: state.posts.posts || {},
+});
+
+const mapDispatchToProps = dispatch => ({
+  getPosts: dispatch.posts.getPosts,
+  createPost: dispatch.posts.createPost,
+  addLike: dispatch.posts.createLike,
+  addComment: dispatch.comments.createComment,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostWithComments);

@@ -3,6 +3,7 @@ import { Firebase, FirebaseRef } from '../lib/firebase';
 export default {
   state: {
     posts: {},
+    currentPost: undefined,
   },
 
   reducers: {
@@ -28,6 +29,12 @@ export default {
       return {
         ...state,
         posts: payload,
+      };
+    },
+    setPost(state, payload) {
+      return {
+        ...state,
+        currentPost: payload,
       };
     },
   },
